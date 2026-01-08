@@ -64,46 +64,48 @@ namespace Tic_Tac_Toe_Game
             pictureBox3.BackColor = Color.GreenYellow;
         }
 
-        bool IsWinner(string XorO)
+        bool IsWinner(enPlayer player)
         {
-            if (AreEqual(pbSlot00.Tag, pbSlot01.Tag, pbSlot02.Tag, XorO))
+            string XorO = (player == enPlayer.PlayerX) ? "X" : "O";
+
+            if (AreEqual(pbSlot1.Tag, pbSlot2.Tag, pbSlot3.Tag, XorO))
             {
-                ColorToGreen(pbSlot00, pbSlot01, pbSlot02);
+                ColorToGreen(pbSlot1, pbSlot2, pbSlot3);
                 return true;
             }
-            else if (AreEqual(pbSlot10.Tag, pbSlot11.Tag, pbSlot12.Tag, XorO))
+            else if (AreEqual(pbSlot4.Tag, pbSlot5.Tag, pbSlot6.Tag, XorO))
             {
-                ColorToGreen(pbSlot10, pbSlot11, pbSlot12);
+                ColorToGreen(pbSlot4, pbSlot5, pbSlot6);
                 return true;
             }
-            else if (AreEqual(pbSlot20.Tag, pbSlot21.Tag, pbSlot22.Tag, XorO))
+            else if (AreEqual(pbSlot7.Tag, pbSlot8.Tag, pbSlot9.Tag, XorO))
             {
-                ColorToGreen(pbSlot20, pbSlot21, pbSlot22);
+                ColorToGreen(pbSlot7, pbSlot8, pbSlot9);
                 return true;
             }
-            else if (AreEqual(pbSlot00.Tag, pbSlot10.Tag, pbSlot20.Tag, XorO))
+            else if (AreEqual(pbSlot1.Tag, pbSlot4.Tag, pbSlot7.Tag, XorO))
             {
-                ColorToGreen(pbSlot00, pbSlot10, pbSlot20);
+                ColorToGreen(pbSlot1, pbSlot4, pbSlot7);
                 return true;
             }
-            else if (AreEqual(pbSlot01.Tag, pbSlot11.Tag, pbSlot21.Tag, XorO))
+            else if (AreEqual(pbSlot2.Tag, pbSlot5.Tag, pbSlot8.Tag, XorO))
             {
-                ColorToGreen(pbSlot01, pbSlot11, pbSlot21);
+                ColorToGreen(pbSlot2, pbSlot5, pbSlot8);
                 return true;
             }
-            else if (AreEqual(pbSlot02.Tag, pbSlot12.Tag, pbSlot22.Tag, XorO))
+            else if (AreEqual(pbSlot3.Tag, pbSlot6.Tag, pbSlot9.Tag, XorO))
             {
-                ColorToGreen(pbSlot02, pbSlot12, pbSlot22);
+                ColorToGreen(pbSlot3, pbSlot6, pbSlot9);
                 return true;
             }
-            else if (AreEqual(pbSlot00.Tag, pbSlot11.Tag, pbSlot22.Tag, XorO))
+            else if (AreEqual(pbSlot1.Tag, pbSlot5.Tag, pbSlot9.Tag, XorO))
             {
-                ColorToGreen(pbSlot00, pbSlot11, pbSlot22);
+                ColorToGreen(pbSlot1, pbSlot5, pbSlot9);
                 return true;
             }
-            else if (AreEqual(pbSlot02.Tag, pbSlot11.Tag, pbSlot20.Tag, XorO))
+            else if (AreEqual(pbSlot3.Tag, pbSlot5.Tag, pbSlot7.Tag, XorO))
             {
-                ColorToGreen(pbSlot02, pbSlot11, pbSlot20);
+                ColorToGreen(pbSlot3, pbSlot5, pbSlot7);
                 return true;
             }
 
@@ -118,11 +120,11 @@ namespace Tic_Tac_Toe_Game
 
         void CheckWinner()
         {
-            if (IsWinner("X"))
+            if (IsWinner(enPlayer.PlayerX))
             {
                 winner = enWinner.PlayerX;
             }
-            else if (IsWinner("O"))
+            else if (IsWinner(enPlayer.PlayerO))
             {
                 winner = enWinner.PlayerO;
             }
@@ -149,7 +151,7 @@ namespace Tic_Tac_Toe_Game
 
         void PerformGameOverAction()
         {
-            lblPlayerTurn.Text = "Game Over";
+            lblTurn.Text = "Game Over";
             lblWinner.Text = GetWinnerText();
 
             foreach (Control control in this.Controls)
@@ -166,7 +168,7 @@ namespace Tic_Tac_Toe_Game
 
         bool SetXOImage(PictureBox pbSlot)
         {
-            if (pbSlot.Tag.ToString() != "Empty")
+            if (pbSlot.Tag.ToString() != "?")
             {
                 MessageBox.Show("Choice already used", "Not Allowed",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -193,12 +195,12 @@ namespace Tic_Tac_Toe_Game
             if (playerTurn == enPlayer.PlayerX)
             {
                 playerTurn = enPlayer.PlayerO;
-                lblPlayerTurn.Text = "Player O";
+                lblTurn.Text = "Player O";
             }
             else 
             {
                 playerTurn = enPlayer.PlayerX;
-                lblPlayerTurn.Text = "Player X";
+                lblTurn.Text = "Player X";
             }
 
             CheckWinner();
@@ -210,8 +212,11 @@ namespace Tic_Tac_Toe_Game
         {
             _SlotsSelectedCount = 0;
 
-            lblPlayerTurn.Text = "Player X";
+            lblTurn.Text = "Player X";
+            playerTurn = enPlayer.PlayerX;
+
             lblWinner.Text = "In Progress";
+            winner = enWinner.InProgress;
 
             foreach (Control control in this.Controls)
             {
@@ -219,8 +224,8 @@ namespace Tic_Tac_Toe_Game
                 {
                     pictureBox.Enabled = true;
                     pictureBox.Image = Resources.QuestionMark;
-                    pictureBox.Tag = "Empty";
-                    pictureBox.BackColor = Color.Black;
+                    pictureBox.Tag = "?";
+                    pictureBox.BackColor = Color.Transparent;
                 }
             }
         }
